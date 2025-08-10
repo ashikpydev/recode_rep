@@ -1,4 +1,4 @@
-program drop auto_oth_re
+
 program define auto_oth_re, rclass
     // Call: auto_oth_re g1b4_5 g1b4oth_5
     syntax varlist(min=2 max=2)
