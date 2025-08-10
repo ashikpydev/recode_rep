@@ -22,7 +22,7 @@ program define auto_oth_nonre, rclass
     local total = _N
     contract `othvar', freq(count)
     gen percent = 100 * count / `total'
-    keep if percent > 20
+    keep if percent > 15
     quietly levelsof `othvar', local(othlist)
     restore
     
