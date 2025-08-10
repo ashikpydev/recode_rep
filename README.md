@@ -10,7 +10,7 @@
 
 Given a numeric variable (`mainvar`) with coded responses and an associated open-ended text variable (`othvar`) capturing "Other" details, this program:
 
-- Identifies frequent open-ended responses (those appearing in 20% or more of non-missing cases),
+- Identifies frequent open-ended responses (those appearing in 15% or more of non-missing cases),
 - Creates new dummy variables for these common responses starting at code 1001,
 - Updates the numeric main variable codes accordingly,
 - Clears matched text from the open-ended variable to avoid duplication.
