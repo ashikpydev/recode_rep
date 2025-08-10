@@ -1,2 +1,2 @@
 v 1
-p auto_oth_re Auto-recodes repeat-group "Other" open-ended responses
+p auto_oth_nonre Auto-recodes "Other" open-ended responses
