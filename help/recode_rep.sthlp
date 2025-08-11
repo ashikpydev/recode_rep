@@ -41,16 +41,16 @@
 
     Suppose your dataset has these variables from a repeat group:
 
-    {txt:- g1b4 = main coded variable}  
-    {txt:- g1b4_5 = dummy for "Other specify" (code 97)}  
+    {txt:- g1b4_5 = main coded variable}  
+    {txt:- g1b4_97_5 = dummy for "Other specify" (code 97)}  
     {txt:- g1b4oth_5 = text responses for "Other specify"}
 
     To automatically recode frequent "Other specify" responses, run:
 
-    . {cmd:recode_rep} g1b4 g1b4_5 g1b4oth_5
+    . {cmd:recode_rep} g1b4_5 g1b4_97_5 g1b4oth_5
 
     The program will detect common text entries in {it:g1b4oth_5} (20% or more frequency),  
-    create new dummy variables and codes for these, update {it:g1b4} and {it:g1b4_5},  
+    create new dummy variables and codes for these, update {it:g1b4_5} and {it:g1b4_97_5},  
     and clear the matched text from {it:g1b4oth_5}.
 
 {hline}
