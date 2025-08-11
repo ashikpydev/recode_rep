@@ -18,12 +18,11 @@
 
     This process is time-consuming, error-prone, and reduces efficiency.
 
-    The {cmd:recode_rep} program automates this process by:
-
-    {bullet} Detecting frequently occurring "Other specify" text responses (with frequency above a threshold, default 20%)  
-    {bullet} Creating new dummy variables and numeric codes for these responses  
-    {bullet} Updating the main and split variables accordingly  
-    {bullet} Clearing the matched open-ended text to avoid duplication  
+    {txt:This program automates this process by:}
+    {txt:- Detecting frequently occurring "Other specify" text responses (with frequency above a threshold, default 20%)}
+    {txt:- Creating new dummy variables and numeric codes for these responses}
+    {txt:- Updating the main and split variables accordingly}
+    {txt:- Clearing the matched open-ended text to avoid duplication}
 
     This greatly speeds up data cleaning and improves accuracy.
 
@@ -33,18 +32,18 @@
     {cmd:recode_rep} {it:mainvar} {it:splitvar} {it:othvar}
 
     where:  
-    {it:mainvar} = numeric coded variable in the repeat group  
-    {it:splitvar} = dummy variable for the "Other specify" category  
-    {it:othvar} = open-ended text variable containing "Other specify" responses
+    {txt:mainvar = numeric coded variable in the repeat group}  
+    {txt:splitvar = dummy variable for the "Other specify" category}  
+    {txt:othvar = open-ended text variable containing "Other specify" responses}
 
 {hline}
 {title:Example}
 
     Suppose your dataset has these variables from a repeat group:
 
-    {bullet} {it:g1b4} = main coded variable  
-    {bullet} {it:g1b4_5} = dummy for "Other specify" (code 97)  
-    {bullet} {it:g1b4oth_5} = text responses for "Other specify"
+    {txt:- g1b4 = main coded variable}  
+    {txt:- g1b4_5 = dummy for "Other specify" (code 97)}  
+    {txt:- g1b4oth_5 = text responses for "Other specify"}
 
     To automatically recode frequent "Other specify" responses, run:
 
