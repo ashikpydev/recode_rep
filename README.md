@@ -10,6 +10,8 @@ Automate recoding of "Other specify" responses in survey data.
 ## Install
 ```stata
 net install recode_rep, from("https://raw.githubusercontent.com/ashikpydev/recode_rep/main/") replace
+
+help recode_rep
 ```
 
 ## Usage
