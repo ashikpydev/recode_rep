@@ -1,4 +1,4 @@
 // auto_oth_nonre installation script
-net install auto_oth_nonre, replace from(".")
+net install recode_rep, replace from(".")
 
-display as result "auto_oth_nonre installed successfully."
+display as result "recode_rep installed successfully."

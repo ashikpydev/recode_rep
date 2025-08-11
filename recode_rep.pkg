@@ -3,5 +3,5 @@ d Installation package for auto_oth_nonre
 d Created by Ashikur Rahman
 d Date: 10 Aug 2025
 
-f ado/auto_oth_nonre.ado
-f help/auto_oth_nonre.sthlp
+f ado/recode_rep.ado
+f help/recode_rep.sthlp

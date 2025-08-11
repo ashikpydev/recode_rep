@@ -1,21 +1,21 @@
 {smcl}
 {* *! version 1.0.0 10aug2025}{...}
-{cmd:help auto_oth_nonre}
+{cmd:help recode_rep}
 
 {hline}
 {title:Title}
 
-    {cmd:auto_oth_nonre} — Auto-recode non-repeat group open-ended responses
+    {cmd:recode_rep} — Auto-recode non-repeat group open-ended responses
 
 {hline}
 {title:Syntax}
 
-    {cmd:auto_oth_nonre} {it:mainvar} {it:othvar}
+    {cmd:recode_rep} {it:mainvar} {it:othvar}
 
 {hline}
 {title:Description}
 
-    {cmd:auto_oth_nonre} scans the open-ended variable {it:othvar} for
+    {cmd:recode_rep} scans the open-ended variable {it:othvar} for
     frequent responses (those appearing in 20% or more of observations).
     It then creates new dummy variables for these common responses,
     updates the numeric codes in {it:mainvar} accordingly, and clears
@@ -31,7 +31,7 @@
 {hline}
 {title:Example}
 
-    . {cmd:auto_oth_nonre g1b4 g1b4oth}
+    . {cmd:recode_rep g1b4 g1b4oth}
 
 {hline}
 {title:Author}
