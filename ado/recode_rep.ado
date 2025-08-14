@@ -63,7 +63,7 @@ program define recode_rep, rclass
     display as result "Others code (splitvar): `others_code'"
     display as result "Prefix (splitvar): `prefix_split'"
 
-    // Filter open-ended values with >=20% frequency
+    // Filter open-ended values with >=10% frequency
     preserve
         keep if !missing(`othvar') & trim(`othvar') != ""
         local total = _N
@@ -76,7 +76,7 @@ program define recode_rep, rclass
         gen double percent = 100 * count / `total'
         keep if percent >= 10
         if _N == 0 {
-            display as result "No open-ended categories >= 20% frequency. Nothing to recode."
+            display as result "No open-ended categories >= 10% frequency. Nothing to recode."
             restore
             exit 0
         }
