@@ -19,7 +19,7 @@
     This process is time-consuming, error-prone, and reduces efficiency.
 
     {txt:This program automates this process by:}
-    {txt:- Detecting frequently occurring "Other specify" text responses (with frequency above a threshold, default 20%)}
+    {txt:- Detecting frequently occurring "Other specify" text responses (with frequency above a threshold, default 10%)}
     {txt:- Creating new dummy variables and numeric codes for these responses}
     {txt:- Updating the main and split variables accordingly}
     {txt:- Clearing the matched open-ended text to avoid duplication}
@@ -49,7 +49,7 @@
 
     . {cmd:recode_rep} g1b4_5 g1b4_97_5 g1b4oth_5
 
-    The program will detect common text entries in {it:g1b4oth_5} (20% or more frequency),  
+    The program will detect common text entries in {it:g1b4oth_5} (10% or more frequency),  
     create new dummy variables and codes for these, update {it:g1b4_5} and {it:g1b4_97_5},  
     and clear the matched text from {it:g1b4oth_5}.
 
