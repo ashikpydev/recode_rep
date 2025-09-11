@@ -63,34 +63,13 @@ program define recode_rep, rclass
     display as result "Others code (splitvar): `others_code'"
     display as result "Prefix (splitvar): `prefix_split'"
 
-    // Filter open-ended values with >=10% frequency
-    preserve
-        keep if !missing(`othvar') & trim(`othvar') != ""
-        local total = _N
-        if `total' == 0 {
-            display as error "No non-empty observations in `othvar'."
-            restore
-            exit 198
-        }
-        contract `othvar', freq(count)
-        gen double percent = 100 * count / `total'
-        keep if percent >= 10
-        if _N == 0 {
-            display as result "No open-ended categories >= 10% frequency. Nothing to recode."
-            restore
-            exit 0
-        }
-        list `othvar' count percent, noobs
-        quietly levelsof `othvar', local(othlist)
-    restore
-
-    // Gather existing dummy vars with prefix pattern, excluding main and splitvar
+    // --- STEP 1: Gather all existing dummy vars with prefix pattern, include mainvar ---
     ds `prefix'_*
     local vars1 "`r(varlist)'"
     ds `prefix_split'_*
     local vars2 "`r(varlist)'"
-    local allvars "`vars1' `vars2'"
-    local exclude "`mainvar' `splitvar'"
+    local allvars "`vars1' `vars2' `mainvar'"
+    local exclude "`splitvar'"
     local varsuffixes ""
     foreach v of local allvars {
         local skip = 0
@@ -111,10 +90,54 @@ program define recode_rep, rclass
         }
     }
 
-    foreach val of local othlist {
+    // --- STEP 2: Collect all open-ended values ---
+    preserve
+        keep if !missing(`othvar') & trim(`othvar') != ""
+        quietly levelsof `othvar', local(all_othlist)
+    restore
+
+    // --- STEP 3: Merge all responses into existing codes first ---
+    foreach val of local all_othlist {
+        local matchvar ""
+        foreach v of local varsuffixes {
+            local vlab : variable label `v'
+            if trim("`vlab'") == trim("`val'") {
+                local matchvar = "`v'"
+                continue, break
+            }
+        }
+
+        if "`matchvar'" != "" {
+            display as result "Merged `val' into existing dummy `matchvar'."
+            replace `matchvar' = 1 if trim(`othvar') == "`val'"
+            replace `splitvar' = 0 if trim(`othvar') == "`val'"
+            foreach v of local varsuffixes {
+                if regexm("`v'", "`prefix'_`others_code'_`rep'$") {
+                    replace `v' = 0 if trim(`othvar') == "`val'"
+                }
+            }
+            replace `othvar' = "" if trim(`othvar') == "`val'"
+        }
+    }
+
+    // --- STEP 4: Create new codes for frequent categories (>=10%) ---
+    preserve
+        keep if !missing(`othvar') & trim(`othvar') != ""
+        local total = _N
+        contract `othvar', freq(count)
+        gen double percent = 100 * count / `total'
+        keep if percent >= 10
+        if _N == 0 {
+            display as result "No frequent categories (>=10%). No new codes created."
+            restore
+            exit 0
+        }
+        quietly levelsof `othvar', local(freq_othlist)
+    restore
+
+    foreach val of local freq_othlist {
         local ++maxcode
         local newvar = "`prefix'_`maxcode'_`rep'"
-
         quietly capture confirm variable `newvar'
         if _rc {
             gen byte `newvar' = .
@@ -122,24 +145,15 @@ program define recode_rep, rclass
         else {
             replace `newvar' = .
         }
-
         label var `newvar' "`val'"
-
         replace `newvar' = 1 if trim(`othvar') == "`val'"
-
-        // Ensure zero if mainvar is non-empty but newvar is not 1
-        replace `newvar' = 0 if trim(`mainvar') != "" & `newvar' != 1 & `newvar' != 1
-
+        replace `newvar' = 0 if trim(`mainvar') != "" & `newvar' != 1
         replace `splitvar' = 0 if trim(`othvar') == "`val'"
-
-        // Replace old others dummy(s) zero for this val
         foreach v of local varsuffixes {
             if regexm("`v'", "`prefix'_`others_code'_`rep'$") {
                 replace `v' = 0 if trim(`othvar') == "`val'"
             }
         }
-
-        // Replace the others code in mainvar string or numeric with new code
         capture confirm numeric variable `mainvar'
         if !_rc {
             replace `mainvar' = `maxcode' if `mainvar' == real("`others_code'") & trim(`othvar') == "`val'"
@@ -147,11 +161,8 @@ program define recode_rep, rclass
         else {
             replace `mainvar' = trim(subinstr(" " + `mainvar' + " ", " `others_code' ", " `maxcode' ", .)) if strpos(" " + `mainvar' + " ", " `others_code' ") > 0 & trim(`othvar') == "`val'"
         }
-
         replace `othvar' = "" if trim(`othvar') == "`val'"
-
         cap order `newvar', after(`splitvar')
-
         display as result "Created `newvar' for value: `val' (code `maxcode')"
     }
 
